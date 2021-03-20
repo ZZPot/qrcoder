@@ -1,7 +1,6 @@
 #include "QrDrawer.h"
 #include "../defs.h"
 
-
 QrDrawer::QrDrawer()
 {
 	_dirty = true;
@@ -70,7 +69,7 @@ bool QrDrawer::DrawQrCode(HWND wnd)
 	DeleteObject(bgBrush);
 	DeleteObject(fgBrush);
 	DeleteObject(fgPen);
-	//DeleteObject(bmp);
+	DeleteObject(bmp);
 	ReleaseDC(wnd, clientDC);
 	if(DIRECT_REDRAW)
 	{

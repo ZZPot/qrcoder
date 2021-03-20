@@ -14,7 +14,6 @@ LRESULT OnWindowRedraw(HWND hWnd);
 LRESULT OnKey(HWND hWnd, DWORD vKeyCode);
 
 
-
 INT WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE, LPTSTR ptCmdLine, int nCmdShow)
 {
 	int moduleSize = DEFAULT_MODULE_SIZE;
@@ -42,6 +41,10 @@ INT WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE, LPTSTR ptCmdLine, int nCmdShow)
 	else
 	{
 		strToCode = ptCmdLine;
+	}
+	if(strToCode.length() == 0)
+	{
+		return 1;
 	}
 #pragma endregion
 #pragma region drawer initialization
