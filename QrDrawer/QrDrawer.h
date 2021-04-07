@@ -22,6 +22,7 @@ public:
 	void SetFgColor(COLORREF fgColor);
 	void SetBgColor(COLORREF fgColor);
 	void SetShape(MODULE_SHAPE shape);
+	bool SaveToFile(bool autoName = true);
 	int GetWindowSize();
 protected:
 	bool Init();
@@ -38,4 +39,5 @@ protected:
 	MODULE_SHAPE _shape;
 	int _dcSize;
 	HDC _memDC;
+	std::tstring _str;
 };

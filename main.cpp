@@ -5,16 +5,18 @@
 #include "common.h"
 #include <algorithm>
 #include "QrDrawer/QrDrawer.h"
+#include "resource.h"
+
 #pragma warning(disable: 4244)
 
 LRESULT CALLBACK MainWndProc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT OnCreateMain(HWND hDlg, WPARAM wParam, LPVOID param);
 LRESULT OnCloseMain(HWND hDlg);
 LRESULT OnWindowRedraw(HWND hWnd);
-LRESULT OnKey(HWND hWnd, DWORD vKeyCode);
+LRESULT OnCommand(HWND hWnd, WORD code);
 
 
-INT WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE, LPTSTR ptCmdLine, int nCmdShow)
+INT WINAPI _tWinMain(_In_ HINSTANCE hInst, _In_opt_ HINSTANCE, _In_ LPTSTR ptCmdLine, _In_ int nCmdShow)
 {
 	int moduleSize = DEFAULT_MODULE_SIZE;
 	MODULE_SHAPE moduleShape = MODULE_SHAPE::DEFAULT_MODULE_SHAPE;
@@ -70,10 +72,13 @@ INT WINAPI _tWinMain(HINSTANCE hInst, HINSTANCE, LPTSTR ptCmdLine, int nCmdShow)
 									windowSize.cx, windowSize.cy, NULL, NULL, NULL, &drawer);
 #pragma endregion
 
+	HACCEL accels = LoadAccelerators(hInst, MAKEINTRESOURCE(IDR_ACCELERATOR1));
+
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
 		TranslateMessage(&msg);
+		TranslateAccelerator(mainWindow, accels, &msg);
 		DispatchMessage(&msg);
 	}
 	return msg.lParam;
@@ -89,9 +94,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return OnCloseMain(hWnd);
 	case WM_PAINT:
 		return OnWindowRedraw(hWnd);
-	case WM_KEYUP:
-		if(OnKey(hWnd, wParam) == 0)
-			return 0;
+	case WM_COMMAND:
+		return OnCommand(hWnd, LOWORD(wParam));		
 	default:
 		return DefWindowProc(hWnd, uMsg, wParam, lParam);
 	}
@@ -115,11 +119,25 @@ LRESULT OnCloseMain(HWND hWnd)
 	return 0;
 }
 
-LRESULT OnKey(HWND hWnd, DWORD vKeyCode)
+LRESULT OnCommand(HWND hWnd, WORD code)
 {
-	switch(vKeyCode)
+	switch (code)
 	{
-	case VK_ESCAPE:
+	case ID_ACCELERATORQSAVE:
+		{
+			QrDrawer* drawer = (QrDrawer*)GetProp(hWnd, WINDOW_PROPERTY_QRDRAWER);
+			drawer->SaveToFile();
+		}
+		return 0;
+		break;
+	case ID_ACCELERATORSAVE:
+		{
+			QrDrawer* drawer = (QrDrawer*)GetProp(hWnd, WINDOW_PROPERTY_QRDRAWER);
+			drawer->SaveToFile(false);
+		}
+		return 0;
+		break;
+	case ID_ACCELERATORQUIT:
 		DestroyWindow(hWnd);
 		return 0;
 		break;
