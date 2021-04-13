@@ -9,12 +9,14 @@ qrcoder (any string)
 
 Default values described in defs.h file.
 
-Saving QR-code:
+Saving QR-code (keys):
 
--Shift+S regular saving with spicifying file name
+[Shift]+[S] regular saving with spicifying file name
 
--S quick save to desktop
+[S] quick save to desktop
 # Libs you need
 https://github.com/nayuki/QR-Code-generator (cpp section)
+
+libpng
 
 https://github.com/ZZPot/common-files
