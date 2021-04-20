@@ -137,7 +137,7 @@ bool QrDrawer::SaveToFile(bool autoName)
 
 	// Open file for writing (binary mode)
 	std::tstring proposedName = commonFunc::MakeSafeFilename(_str) + _T(".png");
-	std::tstring pngFileName = autoName ? commonFunc::GetDesktopPath() + proposedName : commonFunc::SaveFile(NULL, proposedName.c_str(), _T("Save QR-code"), _T("PNG\0*.png\0All files\0*\0\0"));
+	std::tstring pngFileName = autoName ? commonFunc::GetDesktopPath() + _T('\\') + proposedName : commonFunc::SaveFile(NULL, proposedName.c_str(), _T("Save QR-code"), _T("PNG\0*.png\0All files\0*\0\0"));
 	code = _tfopen_s(&fp, pngFileName.c_str(), TEXT("wb"));
 	if (code != NO_ERROR) 
 	{
